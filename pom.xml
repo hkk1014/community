@@ -61,25 +61,50 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.1.1</version>
         </dependency>
 
         <!--<dependency>-->
-            <!--<groupId>com.h2database</groupId>-->
-            <!--<artifactId>h2</artifactId>-->
-            <!--<scope>runtime</scope>-->
+        <!--<groupId>com.h2database</groupId>-->
+        <!--<artifactId>h2</artifactId>-->
+        <!--<scope>runtime</scope>-->
         <!--</dependency>-->
 
 
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+        <!--<dependency>-->
+        <!--<groupId>com.h2database</groupId>-->
+        <!--<artifactId>h2</artifactId>-->
+        <!--<version>1.4.199</version>-->
+        <!--&lt;!&ndash;<scope>test</scope>&ndash;&gt;-->
+        <!--</dependency>-->
+
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.199</version>
-            <!--<scope>test</scope>-->
+
+
+            <groupId>org.flywaydb</groupId>
+
+
+            <artifactId>flyway-core</artifactId>
+
+            <version>5.2.4</version>
+
         </dependency>
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.48</version>
+        </dependency>
+
+
 
     </dependencies>
 
@@ -93,22 +118,27 @@
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
-                <version>6.3.1</version>
+                <version>5.2.4</version>
                 <configuration>
-                    <url>jdbc:h2:~/community</url>
-                    <user>sa</user>
+
+                    <driver>com.mysql.jdbc.Driver</driver>
+                    <url>jdbc:mysql://localhost:3306/community</url>
+
+                    <user>1996</user>
                     <password>123</password>
+                    <baselineOnMigrate>true</baselineOnMigrate>
+                    <locations>classpath:db/migration</locations>
+
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.h2database</groupId>
-                        <artifactId>h2</artifactId>
-                        <version>1.4.199</version>
-                    </dependency>
-                </dependencies>
+                <!--<dependencies>-->
+                <!--<dependency>-->
+                <!--<groupId>com.h2database</groupId>-->
+                <!--<artifactId>h2</artifactId>-->
+                <!--<version>1.4.199</version>-->
+                <!--</dependency>-->
+                <!--</dependencies>-->
             </plugin>
         </plugins>
-
 
 
     </build>
