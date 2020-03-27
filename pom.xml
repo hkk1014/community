@@ -105,7 +105,6 @@
         </dependency>
 
 
-
     </dependencies>
 
     <build>
@@ -137,6 +136,19 @@
                 <!--<version>1.4.199</version>-->
                 <!--</dependency>-->
                 <!--</dependencies>-->
+            </plugin>
+
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.3.7</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>5.1.48</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
 

@@ -3,11 +3,11 @@
 <head>
     <title>HK社区</title>
     <!--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />-->
-    <script src="js/jquery-3.4.1.min.js"></script>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/community.css">
-    <script src="js/bootstrap.min.js"></script>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <script src="/js/bootstrap.min.js"></script>
 
 
 
@@ -28,7 +28,9 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${question.getTitle()}">怎么快速学会 Spring Boot 开发</h4>
+                    <h4 class="media-heading" >
+                        <a th:href="@{'/question/'+${question.getId()}}"  th:text="${question.getTitle()}"></a>
+                    </h4>
                     <span th:text="${question.getDescription()}">用心 多看 多练</span><br/>
                     <span class="text-desc"><span th:text="${question.getCommentCount()}">2</span> 个回复 · <span
                             th:text="${question.getViewCount()}">31</span> 次浏览 · <span

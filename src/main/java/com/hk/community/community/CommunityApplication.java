@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //@MapperScan(basePackages="com.hk.community.community.mapper",sqlSessionFactoryRef="sqlSessionFactory")
 
 
-
+@MapperScan("com.hk.community.community.mapper")
 @SpringBootApplication
 public class CommunityApplication {
 
