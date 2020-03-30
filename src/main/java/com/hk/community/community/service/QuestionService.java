@@ -2,6 +2,8 @@ package com.hk.community.community.service;
 
 import com.hk.community.community.dto.PaginationDTO;
 import com.hk.community.community.dto.QuestionDTO;
+import com.hk.community.community.exception.CustomExceptioin;
+import com.hk.community.community.exception.CustomizeErrorCode;
 import com.hk.community.community.mapper.QuestionMapper;
 import com.hk.community.community.mapper.UserMapper;
 import com.hk.community.community.model.Question;
@@ -109,6 +111,9 @@ public class QuestionService {
     public QuestionDTO getById(Integer id) {
 
         Question question = questionMapper.selectByPrimaryKey(id);
+        if(question==null){
+            throw new CustomExceptioin(CustomizeErrorCode.QUESTON_NOT_FOUND);
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
         Integer creator = questionDTO.getCreator();
@@ -133,7 +138,10 @@ public class QuestionService {
 
             QuestionExample example = new QuestionExample();
             example.createCriteria().andIdEqualTo(question.getId());
-            questionMapper.updateByExampleSelective(updateQuestion, example);
+            int updated = questionMapper.updateByExampleSelective(updateQuestion, example);
+            if(updated!=1){
+                throw new CustomExceptioin(CustomizeErrorCode.QUESTON_NOT_FOUND);
+            }
         }
     }
 }
