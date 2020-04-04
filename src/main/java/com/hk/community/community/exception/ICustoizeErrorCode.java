@@ -7,4 +7,5 @@ package com.hk.community.community.exception;
  **/
 public interface ICustoizeErrorCode {
      String getMessage();
+     Integer getCode();
 }
