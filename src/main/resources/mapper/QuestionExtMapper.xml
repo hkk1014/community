@@ -21,9 +21,18 @@
       update question
       set view_count=view_count + #{record.viewCount,jdbcType=INTEGER} where id = #{record.id}
   </update>
-    <select id="incCommentCount">
+    <update id="incCommentCount">
       update question
       set comment_count=comment_count + #{record.commentCount,jdbcType=INTEGER} where id = #{record.id}
+    </update>
+
+    <select id="selectRlated" parameterType="com.hk.community.community.model.Question" resultMap="BaseResultMap">
+        select
+        *
+        from question where id !=#{id} and tag regexp #{tag}
     </select>
+
+
+
 
 </mapper>

@@ -14,9 +14,15 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.StringJoiner;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 作者: 何康先生
@@ -54,7 +60,8 @@ public class QuestionService {
         Integer offset = size * (page - 1);
         QuestionExample example1 = new QuestionExample();
 
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
+        example1.setOrderByClause("gmt_create desc");
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example1, new RowBounds(offset, size));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
         for (Question question : questions) {
@@ -152,10 +159,31 @@ public class QuestionService {
     }
 
     public void incView(Long id) {
-       Question question = new Question();
-       question.setId(id);
-       question.setViewCount(1);
-       questionExtMapper.incView(question);
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
 
+    }
+
+    public List<QuestionDTO> selectrelated(QuestionDTO questionDTO) {
+        if(org.apache.commons.lang3.StringUtils.isBlank(questionDTO.getTag())){
+            return  new ArrayList<>();
+        }
+        Question question = new Question();
+        String[] tags = questionDTO.getTag().split(",");
+
+        String tag = Arrays.stream(tags).collect(Collectors.joining("|"));
+
+        BeanUtils.copyProperties(questionDTO,question);
+        question.setTag(tag);
+
+        List<Question> questions = questionExtMapper.selectRlated(question);
+        List<QuestionDTO> collect = questions.stream().map(q -> {
+            QuestionDTO questionDTO1 = new QuestionDTO();
+            BeanUtils.copyProperties(q, questionDTO1);
+            return questionDTO1;
+        }).collect(Collectors.toList());
+        return collect;
     }
 }

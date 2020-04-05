@@ -4,18 +4,12 @@ import com.hk.community.community.dto.CommentDTO;
 import com.hk.community.community.enums.CommentTypeEnum;
 import com.hk.community.community.exception.CustomExceptioin;
 import com.hk.community.community.exception.CustomizeErrorCode;
-import com.hk.community.community.exception.ICustoizeErrorCode;
-import com.hk.community.community.mapper.CommentMapper;
-import com.hk.community.community.mapper.QuestionExtMapper;
-import com.hk.community.community.mapper.QuestionMapper;
-import com.hk.community.community.mapper.UserMapper;
+import com.hk.community.community.mapper.*;
 import com.hk.community.community.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.expression.Lists;
-import org.thymeleaf.util.ListUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +32,8 @@ public class CommentService {
     QuestionExtMapper questionExtMapper;
     @Autowired
     UserMapper userMapper;
-
+    @Autowired
+    CommentExtMapper  commentExtMapper;
     @Transactional
     public void insert(Comment comment) {
         if (comment.getParentId() == null || comment.getParentId() == 0) {
@@ -54,6 +49,9 @@ public class CommentService {
                 throw new CustomExceptioin(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);
+            comment.setId(comment.getParentId());
+            comment.setCommentCount(1L);
+            commentExtMapper.incCommentCount(comment);
         } else {
             //回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
@@ -67,9 +65,11 @@ public class CommentService {
         }
     }
 
-    public List<CommentDTO> listByQuestionId(Long id) {
+    public List<CommentDTO> listByTagretId(Long id, CommentTypeEnum type) {
         CommentExample example = new CommentExample();
-        example.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+        example.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(type.getType());
+
+        example.setOrderByClause("gmt_create desc");
         List<Comment> comments = commentMapper.selectByExample(example);
 
 

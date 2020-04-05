@@ -5,6 +5,7 @@ import com.hk.community.community.dto.ResultDTO;
 import com.hk.community.community.exception.CustomExceptioin;
 import com.hk.community.community.exception.CustomizeErrorCode;
 import com.sun.deploy.net.HttpResponse;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -24,6 +25,7 @@ import java.io.PrintWriter;
  * 时间: 2020-03-29 14:22
  * 描述:
  **/
+@Log4j2
 @ControllerAdvice
 public class CustomizeExceptionHandler {
 
@@ -33,7 +35,7 @@ public class CustomizeExceptionHandler {
                   Model model,
                   HttpServletResponse response) {
         String contentType = request.getContentType();
-
+        log.error("访问出错",e);
 
         if ("application/json".equals(contentType)) {
             //返回json
@@ -59,7 +61,7 @@ public class CustomizeExceptionHandler {
             if (e instanceof CustomExceptioin) {
                 model.addAttribute("message", e.getMessage());
             } else {
-                model.addAttribute("message", CustomizeErrorCode.SYS_ERROR);
+                model.addAttribute("message", CustomizeErrorCode.SYS_ERROR.getMessage());
             }
 
             return new ModelAndView("error");
