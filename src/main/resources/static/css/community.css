@@ -22,7 +22,8 @@ body {
     list-style: none;
     padding-left: 0;
 }
-.question-wechat{
+
+.question-wechat {
     width: 100%;
 }
 
@@ -51,7 +52,7 @@ body {
 }
 
 .community-menu {
-    display: block;
+    /*display: block;*/
     color: #999;
     font-size: 13px;
     margin-bottom: 15px;
@@ -122,7 +123,16 @@ body {
 .sub-comments .btn {
     margin: 15px 0px;
 }
+
 .publish-tag-tab {
     display: none;
     margin-top: 10px;
+    padding-top: 10px;
+}
+
+.publish-tag-tab .label-info {
+    white-space: normal;
+    margin: 5px 5px;
+    display: inline-block;
+
 }

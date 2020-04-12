@@ -1,14 +1,17 @@
 package com.hk.community.community.controller;
 
+import com.hk.community.community.cache.TagCache;
 import com.hk.community.community.dto.QuestionDTO;
 import com.hk.community.community.mapper.QuestionMapper;
 import com.hk.community.community.mapper.UserMapper;
 import com.hk.community.community.model.Question;
 import com.hk.community.community.model.User;
 import com.hk.community.community.service.QuestionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  * 描述:
  **/
 @Controller
-public class PubilshController {
+public class PublishController {
 
 
     @Autowired
@@ -38,11 +41,12 @@ public class PubilshController {
         model.addAttribute("tag",question.getTag());
         model.addAttribute("id",question.getId());
 
-        model.addAttribute("tags","");
+        model.addAttribute("tags",TagCache.get());
         return "publish";
     }
     @GetMapping("/publish")
-    public String publish() {
+    public String publish(Model  model) {
+        model.addAttribute("tags",TagCache.get());
         return "publish";
     }
 
@@ -55,6 +59,7 @@ public class PubilshController {
             HttpServletRequest request,
             Model  model
     ) {
+        model.addAttribute("tags",TagCache.get());
         model.addAttribute("title",title);
         model.addAttribute("description",description);
         model.addAttribute("tag",tag);
@@ -69,6 +74,12 @@ public class PubilshController {
 
         if(tag==null||tag==""){
             model.addAttribute("error","标签不能为空");
+            return "publish";
+        }
+
+        String invalid = TagCache.filterInvalid(tag);
+        if(StringUtils.isNoneBlank(invalid)){
+            model.addAttribute("error","输入非法标签"+invalid);
             return "publish";
         }
 
