@@ -7,6 +7,7 @@ import com.hk.community.community.mapper.UserMapper;
 import com.hk.community.community.model.Question;
 import com.hk.community.community.model.User;
 import com.hk.community.community.service.QuestionService;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  * 时间: 2020-03-19 22:18
  * 描述:
  **/
+@Log4j2
 @Controller
 public class PublishController {
 
@@ -77,8 +79,12 @@ public class PublishController {
             return "publish";
         }
 
+        log.info("title:"+title);
+        log.info("description:"+description);
+        log.info("tag:"+tag);
         String invalid = TagCache.filterInvalid(tag);
-        if(StringUtils.isNoneBlank(invalid)){
+
+        if(StringUtils.isNotBlank(invalid)){
             model.addAttribute("error","输入非法标签"+invalid);
             return "publish";
         }

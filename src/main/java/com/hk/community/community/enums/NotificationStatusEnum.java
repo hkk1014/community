@@ -5,7 +5,7 @@ package com.hk.community.community.enums;
  * 时间: 2020-04-11 15:17
  * 描述:
  **/
-public enum NotificationTypeEnum {
+public enum NotificationStatusEnum {
 UNREAD(0),READ(1)
     ;
     private int status;
@@ -14,7 +14,7 @@ UNREAD(0),READ(1)
         return status;
     }
 
-    NotificationTypeEnum(int status) {
+    NotificationStatusEnum(int status) {
         this.status = status;
     }
 }

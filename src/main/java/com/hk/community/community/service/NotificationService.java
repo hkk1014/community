@@ -3,6 +3,9 @@ package com.hk.community.community.service;
 import com.hk.community.community.dto.NotificationDTO;
 import com.hk.community.community.dto.PaginationDTO;
 import com.hk.community.community.enums.NotificationEnum;
+import com.hk.community.community.enums.NotificationStatusEnum;
+import com.hk.community.community.exception.CustomExceptioin;
+import com.hk.community.community.exception.CustomizeErrorCode;
 import com.hk.community.community.mapper.NotificationMapper;
 import com.hk.community.community.mapper.UserMapper;
 import com.hk.community.community.model.*;
@@ -12,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 作者: hekang
@@ -67,7 +69,7 @@ public class NotificationService {
         for (Notification notification : notifications) {
             NotificationDTO notificationDTO = NotificationDTO.builder().build();
             BeanUtils.copyProperties(notification, notificationDTO);
-            notificationDTO.setType(NotificationEnum.nameOfType(notification.getType()));
+            notificationDTO.setTypeName(NotificationEnum.nameOfType(notification.getType()));
             notificationDTOS.add(notificationDTO);
         }
 
@@ -77,8 +79,26 @@ public class NotificationService {
 
     public Long unreadCount(Long userId) {
         NotificationExample example = new NotificationExample();
-        example.createCriteria().andReceiverEqualTo(userId);
+        example.createCriteria().andReceiverEqualTo(userId).andStatusEqualTo(NotificationStatusEnum.UNREAD.getStatus());
+        example.setOrderByClause("gmt_create desc");
         long unreadCount = notificationMapper.countByExample(example);
         return unreadCount;
+    }
+
+    public NotificationDTO read(Long id, User user) {
+        Notification notification = notificationMapper.selectByPrimaryKey(id);
+        if (notification == null) {
+            throw new CustomExceptioin(CustomizeErrorCode.NOTIFICATION_NOT_FOUND);
+        }
+        if (!notification.getReceiver().equals(user.getId())) {
+            throw new CustomExceptioin(CustomizeErrorCode.READ_NOTIFICATION_FAIL);
+        }
+        notification.setStatus(NotificationStatusEnum.READ.getStatus());
+        notificationMapper.updateByPrimaryKey(notification);
+        NotificationDTO notificationDTO = NotificationDTO.builder().build();
+        BeanUtils.copyProperties(notification, notificationDTO);
+        notificationDTO.setTypeName(NotificationEnum.nameOfType(notification.getType()));
+
+        return notificationDTO;
     }
 }

@@ -46,11 +46,14 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:if="${section=='replies'}">
                 <div class="media" th:each="notifaction : ${pagination.data}">
                     <div class="media-body">
-                        <h5 class="media-heading">
+                        <p class="media-heading">
                             <!--/*@thymesVar id="notifierName" type=""*/-->
+                            <span th:text="${notifaction.notifierName +'  '+ notifaction.typeName +'  '}"></span>
                             <a th:href="@{'/notifaction/'+${notifaction.id}}"
-                               th:text="${notifaction.notifierName +'  '+ notifaction.type +'  '+ notifaction.outerTitle }"></a>
-                        </h5>
+                               th:text="${ notifaction.outerTitle }"></a>
+                            <span class="label label-danger"  th:if="${notifaction.status==1}">已读</span>
+                            <span class="label label-success" th:if="${notifaction.status==0}">未读</span>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -96,7 +99,7 @@
                    th:class="${section=='questions'}?'active  list-group-item':'list-group-item'">我的问题</a>
                 <a href="/profile/replies" th:class="${section=='replies'}?'active list-group-item':'list-group-item'">
                     最新回复
-                    <span class="badge" th:text="${unreadCount}">14</span>
+                    <span class="badge" th:text="${session.unreadMessage}">14</span>
                 </a>
             </div>
         </div>
