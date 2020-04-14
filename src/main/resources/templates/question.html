@@ -73,13 +73,13 @@
                         <div class="media-left">
                             <a href="#">
                                 <img class="media-object img-rounded"
-                                     th:src="${comment.getUser().getAvatarUrl()}"
+                                     th:src="${comment.user.avatarUrl}"
                                      src="https://avatars2.githubusercontent.com/u/62013888?v=4">
                             </a>
                         </div>
                         <div class="media-body" th:id="${'comment-body-'+comment.id}">
                             <h5 class="media-heading">
-                                <span th:text="${comment.user.name}"></span>
+                                <span th:text="${ comment.user.name}"></span>
                             </h5>
                             <div><span th:text="${comment.getContent()}"></span></div>
                             <div class="menu">
@@ -122,13 +122,13 @@
                         <div class="media-left">
                             <a href="#">
                                 <img class="media-object img-rounded"
-                                     th:src="${question.getUser().getAvatarUrl()}"
+                                     th:src="${session.user != null ? session.user.avatarUrl : '/images/default_vai.png'}"
                                      src="https://avatars2.githubusercontent.com/u/62013888?v=4">
                             </a>
                         </div>
                         <div class="media-body">
                             <h5 class="media-heading">
-                                <span th:text="${question.user.name}"></span>
+                                <span th:text="${session.user != null ? session.user.name : '游客'}"></span>
                             </h5>
                         </div>
                     </div>
@@ -179,5 +179,6 @@
 </div>
 </div>
 </div>
+<div th:insert="~{footer :: foot}"></div>
 </body>
 </html>

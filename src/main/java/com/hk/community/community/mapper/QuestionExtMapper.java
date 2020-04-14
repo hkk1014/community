@@ -1,5 +1,6 @@
 package com.hk.community.community.mapper;
 
+import com.hk.community.community.dto.QuestionQueryDTO;
 import com.hk.community.community.model.Question;
 import org.apache.ibatis.annotations.Param;
 
@@ -9,4 +10,8 @@ public interface QuestionExtMapper {
  void incView(@Param("record") Question record);
  void incCommentCount(@Param("record")Question  record);
  List<Question> selectRlated(Question question);
+
+ Integer coutBySearch(QuestionQueryDTO questionQueryDTO);
+
+ List<Question> selectBySearch(QuestionQueryDTO questionQueryDTO);
 }

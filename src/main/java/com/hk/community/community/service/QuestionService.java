@@ -2,6 +2,7 @@ package com.hk.community.community.service;
 
 import com.hk.community.community.dto.PaginationDTO;
 import com.hk.community.community.dto.QuestionDTO;
+import com.hk.community.community.dto.QuestionQueryDTO;
 import com.hk.community.community.exception.CustomExceptioin;
 import com.hk.community.community.exception.CustomizeErrorCode;
 import com.hk.community.community.mapper.QuestionExtMapper;
@@ -38,10 +39,24 @@ public class QuestionService {
     @Autowired
     private QuestionExtMapper questionExtMapper;
 
-    public PaginationDTO list(Integer page, Integer size) {
+    public PaginationDTO list(String search, Integer page, Integer size) {
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+
+        if(org.apache.commons.lang3.StringUtils.isNotBlank(search)){
+            String[] searchs = search.split(" ");
+
+            search = Arrays.stream(searchs).filter(str->str.trim().length()>0).collect(Collectors.joining("|"));
+
+        }
+
+
+
+
+
         PaginationDTO<QuestionDTO>  pagination = new PaginationDTO();
 
-        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
+        questionQueryDTO.setSearch(search);
+        Integer totalCount =questionExtMapper.coutBySearch(questionQueryDTO);
         Integer totalPage;
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
@@ -58,10 +73,9 @@ public class QuestionService {
         }
         pagination.setPagination(totalPage, page);
         Integer offset = size * (page - 1);
-        QuestionExample example1 = new QuestionExample();
-
-        example1.setOrderByClause("gmt_create desc");
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example1, new RowBounds(offset, size));
+        questionQueryDTO.setSize(size);
+        questionQueryDTO.setPage(offset);
+        List<Question> questions = questionExtMapper.selectBySearch(questionQueryDTO);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
         for (Question question : questions) {
