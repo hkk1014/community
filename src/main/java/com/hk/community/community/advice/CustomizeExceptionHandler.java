@@ -4,19 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.hk.community.community.dto.ResultDTO;
 import com.hk.community.community.exception.CustomExceptioin;
 import com.hk.community.community.exception.CustomizeErrorCode;
-import com.sun.deploy.net.HttpResponse;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.Result;
 import java.io.IOException;
 import java.io.PrintWriter;
 
