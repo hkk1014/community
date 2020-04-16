@@ -17,7 +17,29 @@
     <properties>
         <java.version>1.8</java.version>
     </properties>
-
+    <profiles>
+        <!--本地-->
+        <profile>
+        <id>dev</id>
+            <properties>
+                <db.url>jdbc:mysql://localhost:3306</db.url>
+                <db.user>root</db.user>
+                <db.password>123</db.password>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <!--线上-->
+        <profile>
+            <id>production</id>
+            <properties>
+                <db.url>jdbc:mysql://localhost:3306</db.url>
+                <db.user>root</db.user>
+                <db.password>123</db.password>
+            </properties>
+        </profile>
+    </profiles>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -152,13 +174,13 @@
                 <version>5.2.4</version>
                 <configuration>
 
-                    <driver>com.mysql.jdbc.Driver</driver>
-                    <url>jdbc:mysql://localhost:3306/community</url>
+                    <!--<driver>com.mysql.jdbc.Driver</driver>-->
+                    <url>${db.url}</url>
 
-                    <user>1996</user>
-                    <password>123</password>
-                    <baselineOnMigrate>true</baselineOnMigrate>
-                    <locations>classpath:db/migration</locations>
+                    <user>${db.user}</user>
+                    <password>${db.password}</password>
+                    <!--<baselineOnMigrate>true</baselineOnMigrate>-->
+                    <!--<locations>classpath:db/migration</locations>-->
 
                 </configuration>
                 <!--<dependencies>-->
