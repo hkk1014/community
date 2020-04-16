@@ -22,7 +22,7 @@
         <profile>
         <id>dev</id>
             <properties>
-                <db.url>jdbc:mysql://localhost:3306</db.url>
+                <db.url>jdbc:mysql://localhost:3306/community</db.url>
                 <db.user>root</db.user>
                 <db.password>123</db.password>
             </properties>
@@ -183,13 +183,19 @@
                     <!--<locations>classpath:db/migration</locations>-->
 
                 </configuration>
-                <!--<dependencies>-->
+
+                <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>5.1.48</version>
+                </dependency>
                 <!--<dependency>-->
                 <!--<groupId>com.h2database</groupId>-->
                 <!--<artifactId>h2</artifactId>-->
                 <!--<version>1.4.199</version>-->
                 <!--</dependency>-->
-                <!--</dependencies>-->
+                </dependencies>
             </plugin>
 
             <plugin>

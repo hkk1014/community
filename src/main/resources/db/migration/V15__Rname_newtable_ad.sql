@@ -1,0 +1,1 @@
+rename table newtable to ad;
